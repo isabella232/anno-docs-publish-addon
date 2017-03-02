@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+    <!-- The CSS package above applies Google styling to buttons and other elements. -->
+    <?!= include('style'); ?>
+  </head>
+  <body>
+    <? if (token) {?>
+    <span id="message" class="bold">Token already exists, setting a new one will overwrite it</span>
+    <? } ?>
+    <div class="explainer width-80">
+      <p> In order to use the <i>AnnoDocsPublish Add-on</i>, you'll need to first add a token that will be validated by the <i>anno-lambda-authorizer</i> AWS lambda function and will then allow us to execute the publish operation.
+    </div>
+    <div id="input" class="block form-group">
+        <label class="bold width-80" for="url">Enter the required token <span class="required-flag">*</span></label>
+        <input class="width-100" placeholder="XXXXXX.XXXXXX" type="text" name="token" id="token">
+    </div>
+    <div class="block" id="button-bar">
+        <button class="blue" id="ok">Ok</button>
+        <button class="red" id="cancel">Cancel</button>
+    </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <?!= include('token_dialog_js'); ?>
+  </body>
+</html>

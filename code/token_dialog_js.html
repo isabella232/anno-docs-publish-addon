@@ -1,0 +1,60 @@
+<script>
+    /**
+    * On document load, assign click handlers to each button and try to load the
+    * user's origin and destination language preferences if previously set.
+    */
+    $(function() {
+        $('#ok').click(setToken);
+        $('#cancel').click(warning);
+    });
+
+    /**
+    * Runs a server-side function to insert the frontmatter of an annotation
+    * into the document at the user's cursor or selection.
+    */
+    function setToken() {
+        if (!$('#token').val()) {
+            msg = 'The token is required';
+            showError(msg, $('#input'));
+            return;
+        }
+        $('#error').remove();
+        this.disabled = true;
+        google.script.run
+            .withSuccessHandler(
+              function(returnSuccess, element) {
+                element.disabled = false;
+                if (returnSuccess) {
+                    google.script.host.close();
+                }
+              })
+            .withFailureHandler(
+              function(msg, element) {
+                showError(msg, $('#input'));
+                element.disabled = false;
+              })
+            .withUserObject(this)
+            .tokenProperty($('#token').val());
+    }
+
+    function warning(msg) {
+        $('#error').remove();
+        if (!($('#message').length)) {
+            msg = 'We need to initialize the token to be able to publish factchecks.';
+            showError(msg, $('#input'));
+        } else {
+            google.script.host.close();
+        }
+    }
+    /**
+    * Inserts a div that contains an error message after a given element.
+    *
+    * @param msg The error message to display.
+    * @param element The element after which to display the error.
+    */
+    function showError(msg, element) {
+        $('#error').remove();
+        var div = $('<div id="error" class="error">' + msg + '</div>');
+        $(element).after(div);
+    }
+</script>
